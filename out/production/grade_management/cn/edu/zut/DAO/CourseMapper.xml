@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zut.DAO.CourseDao">
+    <select id="queryCourseList" resultType="Course">
+        select * from course
+    </select>
+
+    <select id="findCourseByCno" parameterType="String" resultType="Course">
+        select * from course where cno=#{cno}
+    </select>
+
+    <select id="findCourseByName" parameterType="String" resultType="Course">
+        select * from course where name like concat('%',#{name},'%')
+    </select>
+
+    <select id="countByType" parameterType="String" resultType="int">
+        select count(*) from course where type=#{type}
+    </select>
+
+    <insert id="addExam" parameterType="Course">
+        insert into course (cno, name, credit, departmentname, examdate, semester, type, nature, tno)
+          values (#{cno},#{name},#{credit},#{departmentname},#{examdate},#{semester},#{type},#{nature},#{tno})
+    </insert>
+
+
+</mapper>

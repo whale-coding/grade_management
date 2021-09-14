@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zut.DAO.SCDao">
+
+    <resultMap id="GradeMap" type="SC">
+        <id property="id" column="id"></id>
+        <result property="sno" column="sno"></result>
+        <result property="cno" column="cno"></result>
+        <result property="type" column="type"></result>
+        <result property="grades" column="grades"></result>
+
+        <collection property="student" ofType="Student">
+            <id property="id" column="id"></id>
+            <id property="sno" column="sno"></id>
+            <result property="name" column="sname"></result>
+        </collection>
+
+        <collection property="course" ofType="Course">
+            <id property="id" column="id"></id>
+            <id property="cno" column="cno"></id>
+            <result property="name" column="cname"></result>
+        </collection>
+    </resultMap>
+
+
+    <select id="findAllGrade" resultMap="GradeMap" parameterType="String">
+        SELECT sc.id, sc.sno,sc.cno,course.`name` cname,student.`name` sname,sc.type,grades FROM student,course,sc WHERE sc.sno=student.sno AND sc.cno=course.cno and student.departmentname=#{departmentname}
+    </select>
+
+    <select id="findSCById" resultType="SC" parameterType="int">
+        select * from sc where id=#{id}
+    </select>
+
+    <update id="modifySc" parameterType="SC">
+        update sc set grades=#{grades} where id=#{id}
+    </update>
+
+    <update id="addGrade" parameterType="SC">
+        update sc set grades=#{grades} where id=#{id}
+    </update>
+
+    <select id="findAllASCBySno" resultMap="GradeMap" parameterType="String">
+        SELECT sc.id, sc.sno,sc.cno,course.`name` cname,student.`name` sname,sc.type,grades FROM student,course,sc WHERE sc.sno=student.sno AND sc.cno=course.cno and student.departmentname=#{departmentname} order by sc.sno asc
+    </select>
+
+    <select id="findAllDescByGrades" resultMap="GradeMap" parameterType="String">
+        SELECT sc.id, sc.sno,sc.cno,course.`name` cname,student.`name` sname,sc.type,grades FROM student,course,sc WHERE sc.sno=student.sno AND sc.cno=course.cno and student.departmentname=#{departmentname} order by grades desc
+    </select>
+
+    <select id="findGradeExcel" resultType="Grade" parameterType="String">
+        SELECT  sc.sno,sc.cno,course.`name` cname,student.`name` sname,sc.type,grades FROM student,course,sc WHERE sc.sno=student.sno AND sc.cno=course.cno and student.departmentname=#{departmentname}
+    </select>
+
+    <select id="findAllGradeIsNull" resultMap="GradeMap" parameterType="String">
+        SELECT sc.id, sc.sno,sc.cno,course.`name` cname,student.`name` sname,sc.type,grades FROM student,course,sc WHERE sc.sno=student.sno AND sc.cno=course.cno and student.departmentname=#{departmentname} and grades is null
+    </select>
+
+
+</mapper>

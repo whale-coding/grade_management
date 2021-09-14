@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zut.DAO.StudentDao">
+    <select id="loginStudent" resultType="Student" >
+        select * from student where sno=#{sno} and password=#{password}
+    </select>
+
+    <select id="queryStudentList" resultType="Student" parameterType="String">
+        select * from student where departmentname=#{departmentname}
+    </select>
+
+    <update id="ModifyStudent" parameterType="Student">
+        update student set name=#{name},sex=#{sex},age=#{age},studentmajor=#{studentmajor},grade=#{grade} where id =#{id}
+    </update>
+
+    <delete id="delStudentByID" parameterType="int">
+        delete from student where id=#{id}
+    </delete>
+
+    <select id="queryStudentById" resultType="Student" parameterType="int">
+        select * from student where id=#{id}
+    </select>
+
+    <insert id="addStudent" parameterType="Student">
+        insert into student(sno,name, sex, age,departmentname,studentmajor,grade,enrollmentdate)
+        values (#{sno},#{name},#{sex},#{age},#{departmentname},#{studentmajor},#{grade},#{enrollmentdate});
+    </insert>
+
+    <select id="queryStudentByName" resultType="Student">
+        select * from student where name like concat('%',#{name},'%') and  departmentname=#{departmentname}
+    </select>
+
+    <select id="queryStudentBySno" resultType="Student">
+        select * from student where sno=#{sno} and  departmentname=#{departmentname}
+    </select>
+
+    <select id="CountMajorByDept" resultType="int" parameterType="String">
+        select count(*) from student where studentmajor=#{studentmajor}
+    </select>
+
+    <select id="getAllMajorByDept" resultType="String" parameterType="String">
+        select distinct studentmajor from student where departmentname=#{departmentname}
+    </select>
+
+    <select id="countStuByGrade" resultType="int">
+        select count(*) from student where grade=#{grade} and departmentname=#{departmentname}
+    </select>
+
+<!--    ============================================================-->
+    <select id="countByMajor" parameterType="String" resultType="int">
+        select count(*) from student where studentmajor=#{studentmajor}
+    </select>
+<!--===============================================================================-->
+    <select id="getlist" resultType="Student">
+        select * from student order by id asc limit #{start},#{count}
+    </select>
+    <!-- 获取用户总数 -->
+    <select id="getTotal"  resultType="Integer">
+        SELECT count(*) FROM student
+    </select>
+
+
+</mapper>
