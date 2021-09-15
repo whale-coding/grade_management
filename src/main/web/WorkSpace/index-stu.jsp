@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -75,27 +76,11 @@
                         <span>主菜单</span>
                     </li>
                     <li class="active">
-                        <a href="${pageContext.request.contextPath}/WorkSpace/index-stu.jsp"><i class="fas fa-th-large"></i> <span>返回主页</span></a>
+                        <a href="${pageContext.request.contextPath}/WorkSpace/index-stu.jsp"><i class="fas fa-th-large"></i> <span>主页</span></a>
                     </li>
-                    <li class="submenu">
-                        <a href="#"><i class="fas fa-user-graduate"></i> <span>学生信息</span> <span class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="${pageContext.request.contextPath}/WorkSpace/Student/students.jsp">学生列表</a></li>
-                            <li><a href="${pageContext.request.contextPath}/WorkSpace/Student/student-details.jsp">学生视图</a></li>
-                            <li><a href="">成绩查询</a></li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <a href="${pageContext.request.contextPath}/WorkSpace/holiday.jsp"><i class="fas fa-holly-berry"></i> <span>假期</span></a>
-                    </li>
-                    <li>
-                        <a href="${pageContext.request.contextPath}/WorkSpace/exam.jsp"><i class="fas fa-clipboard-list"></i> <span>考试</span></a>
-                    </li>
-                    <li>
-                        <a href="${pageContext.request.contextPath}/WorkSpace/time-table.jsp"><i class="fas fa-table"></i> <span>时间表</span></a>
-                    </li>
-
+                    <li><a href="javascript:void(0)" onclick="Studentcourse(${SingleStudent.sno})"><i class="fas fa-book-reader"></i> <span>课程</span></a></li>
+                    <li><a href="javascript:void(0)" onclick="Studentexam(${SingleStudent.sno})"><i class="fas fa-table"></i> <span>考试</span></a></li>
+                    <li><a href="javascript:void(0)" onclick="Studentgrades(${SingleStudent.sno})"><i class="fas fa-clipboard-list"></i> <span>成绩</span></a></li>
                 </ul>
             </div>
         </div>
@@ -110,10 +95,88 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3 class="page-title">Welcome Student!</h3>
+                        <h3 class="page-title">Welcome ${SingleStudent.name}!</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item active">主页</li>
                         </ul>
+                        <div class="about-info">
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <h5>学业状态</h5>
+                                </div>
+                            </div>
+                            <div class="row follow-sec">
+                                <div class="col-md-4 mb-3">
+                                    <div class="blue-box">
+                                        <h3>${studentcount.allcredit}</h3>
+                                        <p>需修学分</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="blue-box">
+                                        <h3>${studentcount.hadcredit}</h3>
+                                        <p>已修学分</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="blue-box">
+                                        <h3>${studentcount.hangSections}</h3>
+                                        <p>挂科数目</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <h5>毕业状态</h5>
+                                    <p>${studentcount.status}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <h5>挂科科目</h5>
+                                </div>
+                                <div class="card card-table">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table  class="table table-hover table-center mb-0 datatable">
+                                                <thead>
+                                                <tr>
+                                                    <th>课程号</th>
+                                                    <th>课程名</th>
+                                                    <th>开课单位</th>
+                                                    <th>上课教师</th>
+                                                    <th>学分</th>
+                                                    <th>选课类型</th>
+                                                    <th>课程性质</th>
+                                                    <th>开课学期</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${studentcount.HSections}" var="course">
+                                                    <tr>
+                                                        <td>${course.cno}</td>
+                                                        <td>${course.name}</td>
+                                                        <td>${course.departmentname}</td>
+                                                        <td>${course.tname}</td>
+                                                        <td>${course.credit}</td>
+                                                        <td>${course.type}</td>
+                                                        <td>${course.nature}</td>
+                                                        <td>${course.semester}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -147,6 +210,19 @@
 
 <!-- Custom JS -->
 <script  src="${pageContext.request.contextPath}/assets/js/script.js"></script>
-
+<script>
+    function aClick () {
+        location.href="${pageContext.request.contextPath}/logoutUser"
+    }
+    function Studentexam(Sno) {
+        location.href="${pageContext.request.contextPath}/Studentexam?Sno="+Sno
+    }
+    function Studentcourse(Sno) {
+        location.href="${pageContext.request.contextPath}/Studentcourse?Sno="+Sno
+    }
+    function Studentgrades(Sno) {
+        location.href="${pageContext.request.contextPath}/Studentgrades?Sno="+Sno
+    }
+</script>
 </body>
 </html>
